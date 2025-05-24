@@ -8,7 +8,7 @@ export class UploadService {
   async createInterview(resume: string, jobDesc: string) {
     const { data, error } = await this.supabaseService.client
       .from('interviews')
-      .insert([{ user_id: null, resume_text: resume, job_desc_text: jobDesc }])
+      .insert([{ resume_text: resume, job_desc_text: jobDesc }])
       .select('id')
       .single();
 
