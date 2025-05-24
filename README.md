@@ -41,16 +41,55 @@ $ npm run start:prod
  
 - **Feedback Generation**  
   - Uses `gpt-3.5-turbo` (or Chat API) to analyze transcript  
-  - Persists feedback in DB for retrieval  
+  - Persists feedback in DB for retrieval
+ 
+- **Data Access**  
+  - `@supabase/supabase-js` client wrapped in `SupabaseService`  
+  - Insert/select on every chat turn and feedback generation  
 
-## Database (Supabase)
+
+## Database Schema
 
 ![supabase_schema](https://github.com/user-attachments/assets/76810643-7248-4c11-ad70-6ad0200586d2)
 
 
-- **Data Access**  
-  - `@supabase/supabase-js` client wrapped in `SupabaseService`  
-  - Insert/select on every chat turn and feedback generation  
+## interviews
+
+| Column         | Type            | Constraints                        |
+| -------------- | --------------- | ---------------------------------- |
+| **id**         | BIGINT       | PRIMARY KEY                        |
+| **created_at** | TIMESTAMPTZ     | NOT NULL, DEFAULT NOW()            |
+| **job_desc_text** | TEXT         | NOT NULL                           |
+| **resume_text**   | TEXT         | NOT NULL                           |
+
+## messages
+
+| Column         | Type            | Constraints                                               |
+| -------------- | --------------- | --------------------------------------------------------- |
+| **id**         | BIGSERIAL       | PRIMARY KEY                                               |
+| **timestamp**  | TIMESTAMPTZ     | NOT NULL, DEFAULT NOW()                                   |
+| **interview_id** | BIGINT        | NOT NULL, REFERENCES interviews(id) ON DELETE CASCADE     |
+| **role**       | TEXT            | NOT NULL                                                  |
+| **content**    | TEXT            | NOT NULL                                                  |
+
+## feedback
+
+| Column         | Type            | Constraints                                               |
+| -------------- | --------------- | --------------------------------------------------------- |
+| **id**         | BIGSERIAL       | PRIMARY KEY                                               |
+| **timestamp**  | TIMESTAMPTZ     | NOT NULL, DEFAULT NOW()                                   |
+| **interview_id** | BIGINT        | NOT NULL, REFERENCES interviews(id) ON DELETE CASCADE     |
+| **feedback_text** | TEXT         | NOT NULL                                                  |
+
+## Indexes
+
+- CREATE INDEX ON messages(interview_id);
+
+- CREATE INDEX ON feedback(interview_id);
+
+```sql
+
+
 
 
 
