@@ -1,17 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { SupabaseService } from 'database/supabase/supabase.service';
-import OpenAI from 'openai';
+import { OpenAIService } from 'llm/openai/openai.service';
 
 @Injectable()
 export class FeedbackService {
-  private openai: OpenAI;
-
-  constructor(private readonly supabaseService: SupabaseService) {
-    this.openai = new OpenAI({
-      apiKey:
-        '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',
-    });
-  }
+  constructor(
+    private readonly supabaseService: SupabaseService,
+    private readonly openAIService: OpenAIService,
+  ) {}
 
   async generateFeedback(interviewId: number): Promise<number> {
     const { data: msgs } = await this.supabaseService.client
@@ -22,13 +18,11 @@ export class FeedbackService {
 
     const transcript = msgs?.map((m) => `${m.role}: ${m.content}`).join('\n');
 
-    const resp = await this.openai.completions.create({
+    const feedbackText = await this.openAIService.createCompletion({
       model: 'gpt-3.5-turbo-instruct',
       prompt: `Provide feedback based on this interview transcript:\n${transcript}`,
       max_tokens: 150,
     });
-
-    const feedbackText = resp.choices[0].text.trim();
 
     const { data: inserted, error: insertError } =
       await this.supabaseService.client

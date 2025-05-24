@@ -14,6 +14,24 @@ export class OpenAIService {
     });
   }
 
+  async createCompletion({
+    model,
+    prompt,
+    max_tokens,
+  }: {
+    model: string;
+    prompt: string;
+    max_tokens: number;
+  }) {
+    const res = await this.client.completions.create({
+      model,
+      prompt,
+      max_tokens,
+    });
+    const text = res.choices[0].text.trim();
+    return text;
+  }
+
   async createChatCompletion({
     model,
     messages,
