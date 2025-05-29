@@ -99,10 +99,10 @@ Create a `.env` file in the project root and set the following three keys, for t
 
 ```dotenv
 # Your Supabase project URL
-SUPABASE_URL=https://xyzcompany.supabase.co](https://bpcwankeqkfygtsuhtad.supabase.co)
+SUPABASE_URL=********************************
 
 # Your Supabase Service Role key (or anon key, if preferred)
-SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJwY3dhbmtlcWtmeWd0c3VodGFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgwNzc3OTksImV4cCI6MjA2MzY1Mzc5OX0.wjF5cswvxYnpHzvU7VBGjoGELwPKKifPp5jQDHudQww
+SUPABASE_KEY=********************************
 
 # Your OpenAI secret key
 OPENAI_API_KEY=sk-********************************
